@@ -48,8 +48,15 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install --no-install-recommends -y -qq minisign jq
           base="https://ordreth.com/apps/aura/updates"
-          curl --fail --silent --show-error --location --proto '=https' --max-filesize 65536 \
-            --output latest.json "$base/latest.json"
+          # Before the first signed release the site has no manifest: nothing to follow, not a failure.
+          status="$(curl --silent --show-error --location --proto '=https' --max-filesize 65536 \
+            --output latest.json --write-out '%{http_code}' "$base/latest.json")"
+          if [ "$status" = "404" ]; then
+            echo "The site has no update manifest yet: nothing to do."
+            echo "newer=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          [ "$status" = "200" ] || { echo "The manifest answered HTTP $status" >&2; exit 1; }
           curl --fail --silent --show-error --location --proto '=https' --max-filesize 4096 \
             --output latest.json.minisig "$base/latest.json.minisig"
           minisign -V -q -p aura-update.pub -m latest.json -x latest.json.minisig
