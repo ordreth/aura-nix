@@ -114,13 +114,21 @@ modules do not manage them.
 For the maintainers. Every day, `.github/workflows/update.yml` reads Aura's update manifest
 (`ordreth.com/apps/aura/updates/latest.json`), checks its minisign signature against `aura-update.pub` (the
 same public key Aura is built with), downloads the `.deb` it names and checks its SHA-256, runs `update.sh`
-and opens a pull request. Check it out, then:
+and opens a pull request. Check it out and run it:
 
 ```sh
+git fetch origin && git switch update/aura-<version>
 nix build .#aura && ./result/bin/aura-player
 ```
 
-and merge. By hand:
+Then merge it from your computer, not with the button on GitHub, which writes a merge commit in the name of
+the account that pressed it. GitHub marks the pull request as merged by itself:
+
+```sh
+git switch main && git merge --ff-only origin/update/aura-<version> && git push origin main
+```
+
+By hand:
 
 ```sh
 ./update.sh <version> <sha256>   # the SHA-256 from the release's SHA256SUMS-linux.txt

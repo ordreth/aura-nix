@@ -110,4 +110,4 @@ jobs:
           gh pr create --base main --head "$branch" --title "Aura $VERSION" --body \
             "The signed update manifest on ordreth.com names Aura $VERSION. Its signature verified with aura-update.pub and the .deb matches its SHA-256 ($SHA256).
 
-          Before merging: \`nix build .#aura && ./result/bin/aura-player\` (rows N9 to N11 of Aura's QA list)."
+          Before merging: \`nix build .#aura && ./result/bin/aura-player\` (rows N9 to N12 of Aura's QA list). Merge from a computer, not with the button: \`git switch main && git merge --ff-only origin/$branch && git push origin main\`."
