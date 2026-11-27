@@ -86,8 +86,9 @@ NIXPKGS_ALLOW_UNFREE=1 nix-env -f https://github.com/ordreth/aura-nix/archive/ma
 
 ## Getting new versions
 
-Aura does not update itself when installed through Nix: the version arrives when this flake is bumped, which
-happens within a day of a release (a scheduled job opens the pull request). If you turn on update checks in
+Aura does not update itself when installed through Nix: the version arrives when this flake is bumped,
+usually within a day or two of a release (a scheduled job opens the pull request, and it is merged once the
+new build has been run). If you turn on update checks in
 Aura (Settings → About → Updates), it tells you when a new version is out and how to get it, but it never
 downloads or installs anything in a Nix build.
 
