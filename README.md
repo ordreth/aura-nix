@@ -140,7 +140,8 @@ serves today. Prefer the published checksum (or the signed manifest, as the job 
 
 ## Help and license
 
-Using Aura: [the user guides](https://ordreth.com/apps/aura). Problems: contact@ordreth.com.
+Using Aura: [the user guides](https://ordreth.com/apps/aura). Problems with Aura or with this flake,
+security reports included: contact@ordreth.com. This repository takes no issues or pull requests.
 
 Two licenses apply, to different things:
 
