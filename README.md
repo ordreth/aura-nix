@@ -86,7 +86,10 @@ NIXPKGS_ALLOW_UNFREE=1 nix-env -f https://github.com/ordreth/aura-nix/archive/ma
 
 ## Getting new versions
 
-Aura does not update itself when installed through Nix: the version arrives when this flake is bumped.
+Aura does not update itself when installed through Nix: the version arrives when this flake is bumped, which
+happens within a day of a release (a scheduled job opens the pull request). If you turn on update checks in
+Aura (Settings → About → Updates), it tells you when a new version is out and how to get it, but it never
+downloads or installs anything in a Nix build.
 
 ```sh
 nix flake update aura                  # in your config's folder, then rebuild (nixos-rebuild / home-manager switch)
@@ -107,7 +110,16 @@ modules do not manage them.
 
 ## Updating to a new Aura release
 
-For the maintainers:
+For the maintainers. Every day, `.github/workflows/update.yml` reads Aura's update manifest
+(`ordreth.com/apps/aura/updates/latest.json`), checks its minisign signature against `aura-update.pub` (the
+same public key Aura is built with), downloads the `.deb` it names and checks its SHA-256, runs `update.sh`
+and opens a pull request. Check it out, then:
+
+```sh
+nix build .#aura && ./result/bin/aura-player
+```
+
+and merge. By hand:
 
 ```sh
 ./update.sh <version> <sha256>   # the SHA-256 from the release's SHA256SUMS-linux.txt
@@ -115,7 +127,7 @@ nix build .#aura && ./result/bin/aura-player
 ```
 
 Without the SHA-256, `update.sh` downloads the file and hashes it, which only proves it is what the site
-serves today. Prefer the published checksum.
+serves today. Prefer the published checksum (or the signed manifest, as the job does).
 
 ## Help and license
 

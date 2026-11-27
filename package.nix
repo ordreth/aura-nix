@@ -86,8 +86,13 @@ stdenv.mkDerivation (finalAttrs: {
   '';
 
   # The tray icon loads libayatana-appindicator at run time (dlopen), so autoPatchelf cannot see it.
+  # AURA_INSTALL=nix: the binary comes from the .deb and would otherwise think it was installed by dpkg;
+  # with it, Aura's updater only says that a new version exists and never tries to install it.
   preFixup = ''
-    gappsWrapperArgs+=(--prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libayatana-appindicator ]})
+    gappsWrapperArgs+=(
+      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libayatana-appindicator ]}
+      --set AURA_INSTALL nix
+    )
   '';
 
   meta = {
